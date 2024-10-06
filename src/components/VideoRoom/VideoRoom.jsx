@@ -1,3 +1,6 @@
+import MicIcon from "@mui/icons-material/Mic";
+import MicOffIcon from "@mui/icons-material/MicOff";
+import IconButton from "@mui/material/IconButton";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import React, { useEffect, useState } from "react";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
@@ -11,6 +14,7 @@ const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 const VideoRoom = ({ setJoined }) => {
   const [users, setUsers] = useState([]);
   const [localTracks, setLocalTracks] = useState([]);
+  const [micMuted, setMicMuted] = useState(false); // Estado do microfone
 
   const handleUserJoined = async (user, mediaType) => {
     await client.subscribe(user, mediaType);
@@ -69,6 +73,17 @@ const VideoRoom = ({ setJoined }) => {
     setJoined(false); // Retornar à tela inicial
   };
 
+  // Função para alternar o estado de mutar/desmutar microfone
+  const toggleMic = () => {
+    const audioTrack = localTracks[0]; // Assumindo que o áudio é a primeira track
+    if (micMuted) {
+      audioTrack.setEnabled(true); // Desmutar o microfone
+    } else {
+      audioTrack.setEnabled(false); // Mutar o microfone
+    }
+    setMicMuted(!micMuted); // Alternar o estado do botão
+  };
+
   return (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -84,9 +99,13 @@ const VideoRoom = ({ setJoined }) => {
           })}
         </div>
       </div>
+      {/* Botão para mutar/desmutar microfone */}
+      <IconButton onClick={toggleMic} style={{ marginTop: "5px" }}>
+        {micMuted ? <MicOffIcon /> : <MicIcon />}
+      </IconButton>
       {/* Botão para sair da sala */}
       <button onClick={leaveRoom} style={{}}>
-        Leave Room
+        LEAVE ROOM
       </button>
     </>
   );
