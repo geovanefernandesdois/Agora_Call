@@ -1,0 +1,15 @@
+.header{
+    background-color: #42A5F5;
+    width: 100%;
+    height: 72.46px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 2.5rem; /* Adiciona espaçamento à esquerda */
+    padding-right: 2.5rem; /* Adiciona espaçamento à direita */
+}
+
+.header img{
+    width: 242px;
+    height: 41px;
+}
