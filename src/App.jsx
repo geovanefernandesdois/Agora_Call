@@ -5,11 +5,12 @@ import VideoRoom from "./components/VideoRoom/VideoRoom";
 
 function App() {
   const [joined, setJoined] = useState(false);
+
   return (
     <div className="App">
       <Header />
       {!joined && <button onClick={() => setJoined(true)}>JOIN ROOM</button>}
-      {joined && <VideoRoom />}
+      {joined && <VideoRoom setJoined={setJoined} />}
     </div>
   );
 }

@@ -8,18 +8,20 @@ const TOKEN =
 const CHANNEL = "Geovane";
 const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
-const VideoRoom = () => {
+const VideoRoom = ({ setJoined }) => {
   const [users, setUsers] = useState([]);
   const [localTracks, setLocalTracks] = useState([]);
+
   const handleUserJoined = async (user, mediaType) => {
     await client.subscribe(user, mediaType);
     if (mediaType === "video") {
       setUsers((previousUsers) => [...previousUsers, user]);
     }
     if (mediaType === "audio") {
-      user.audioTrack.play();
+      user.audioTrack.play(); // Tocar áudio do usuário remoto
     }
   };
+
   const handleUserLeft = (user) => {
     setUsers((previousUsers) => {
       return previousUsers.filter((u) => u.uid !== user.uid);
@@ -29,6 +31,7 @@ const VideoRoom = () => {
   useEffect(() => {
     client.on("user-published", handleUserJoined);
     client.on("user-left", handleUserLeft);
+
     client
       .join(APP_ID, CHANNEL, TOKEN, null)
       .then((uid) =>
@@ -51,24 +54,41 @@ const VideoRoom = () => {
       }
       client.off("user-published", handleUserJoined);
       client.off("user-left", handleUserLeft);
-      client.unpublish(tracks).then(() => client.leave());
+      client.unpublish(localTracks).then(() => client.leave());
     };
   }, []);
 
+  // Função para sair da sala e retornar à tela inicial
+  const leaveRoom = () => {
+    // Parar e fechar todas as tracks locais
+    for (let localTrack of localTracks) {
+      localTrack.stop();
+      localTrack.close();
+    }
+    client.leave(); // Sair da sala do Agora
+    setJoined(false); // Retornar à tela inicial
+  };
+
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2,400px)",
-          gap: "40px",
-        }}
-      >
-        {users.map((user) => {
-          return <VideoPlayer key={user.uid} user={user} />;
-        })}
+    <>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "40px",
+            marginTop: "5rem",
+          }}
+        >
+          {users.map((user) => {
+            return <VideoPlayer key={user.uid} user={user} />;
+          })}
+        </div>
       </div>
-    </div>
+      {/* Botão para sair da sala */}
+      <button onClick={leaveRoom} style={{}}>
+        Leave Room
+      </button>
+    </>
   );
 };
 
