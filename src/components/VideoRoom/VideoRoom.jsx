@@ -7,7 +7,7 @@ import VideoPlayer from "../VideoPlayer/VideoPlayer";
 
 const APP_ID = "be5b47c8df4c4b7c8e07d771df2b2ab4";
 const TOKEN =
-  "007eJxTYIiT4z0Zua7Va9cR6yCj9OPBjjv1Fdoq+E9xHDh6We1ym6QCQ1KqaZKJebJFSppJskkSkJFqYJ5ibm6YkmaUZJSYZBJ2nSm9IZCR4Yf/bVZGBggE8dkZ3FPzyxLzUhkYAEqJH/M=";
+  "007eJxTYPhktTte+d6DiU9aZHVXRhcxPZg4NfxvjF9dw+bDdz557hRUYEhKNU0yMU+2SEkzSTZJAjJSDcxTzM0NU9KMkowSk0zWp7OkNwQyMvB4NTEyMkAgiM/O4J6aX5aYl8rAAABB8SHN";
 const CHANNEL = "Geovane";
 const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
